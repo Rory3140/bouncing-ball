@@ -1,9 +1,16 @@
-let gyroscope = new Gyroscope({ frequency: 60 });
-const display = document.getElementById("display");
+if ("DeviceOrientationEvent" in window) {
+  const display = document.getElementById("display");
 
-gyroscope.addEventListener("reading", (e) => {
-    display.innerText = `X: ${gyroscope.x}\nY: ${gyroscope.y}\nZ: ${gyroscope.z}`;
-    console.log(gyroscope.x, gyroscope.y, gyroscope.z);
-});
+  window.addEventListener("deviceorientation", handleOrientation);
 
-gyroscope.start();
+  function handleOrientation(event) {
+    const x = event.alpha;
+    const y = event.beta;
+    const z = event.gamma;
+
+    display.innerText = `X: ${x}\nY: ${y}\nZ: ${z}`;
+    console.log(x, y, z);
+  }
+} else {
+  alert("Device orientation not supported.");
+}
