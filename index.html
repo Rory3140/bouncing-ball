@@ -17,6 +17,12 @@
 
 <body>
     <div id="object"></div>
+    <div>
+        Sensitivity X: <input type="number" id="sensitivityX" value="0.2" step="0.1" min="0" max="1">
+    </div>
+    <div>
+        Sensitivity Y: <input type="number" id="sensitivityY" value="0.2" step="0.1" min="0" max="1">
+    </div>
 
     <script>
         function updateFieldIfNotNull(fieldName, value, precision = 10) {
@@ -28,8 +34,17 @@
         let velocityX = 0;
         let velocityY = 0;
         let lastTime = null;
+        let sensitivityX = 0.2; // Initial sensitivity for X-axis
+        let sensitivityY = 0.2; // Initial sensitivity for Y-axis
         const damping = 0.8; // Damping factor for simulating inertia
-        const sensitivity = 0.2; // Sensitivity factor to adjust movement
+
+        // Center the object in the middle of the screen
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const initialLeft = (screenWidth - object.offsetWidth) / 2;
+        const initialTop = (screenHeight - object.offsetHeight) / 2;
+        object.style.left = `${initialLeft}px`;
+        object.style.top = `${initialTop}px`;
 
         function handleOrientation(event) {
             const alpha = event.alpha;
@@ -38,13 +53,17 @@
             updateFieldIfNotNull("Gyroscope_alpha", alpha);
             updateFieldIfNotNull("Gyroscope_beta", beta);
 
+            // Update sensitivity values from input fields
+            sensitivityX = parseFloat(document.getElementById("sensitivityX").value);
+            sensitivityY = parseFloat(document.getElementById("sensitivityY").value);
+
             // Calculate time difference since last update
             const currentTime = Date.now();
             const deltaTime = lastTime ? (currentTime - lastTime) / 1000 : 0;
 
-            // Calculate new velocity based on gyroscope data
-            velocityX += beta * sensitivity * deltaTime;
-            velocityY += alpha * sensitivity * deltaTime;
+            // Calculate new velocity based on gyroscope data and sensitivity
+            velocityX += beta * sensitivityX * deltaTime;
+            velocityY += alpha * sensitivityY * deltaTime;
 
             // Apply damping to simulate inertia
             velocityX *= damping;
@@ -55,8 +74,6 @@
             const newTop = object.offsetTop + velocityY;
 
             // Ensure the object stays within the bounds of the screen
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
             object.style.left = `${Math.min(Math.max(newLeft, 0), screenWidth - object.offsetWidth)}px`;
             object.style.top = `${Math.min(Math.max(newTop, 0), screenHeight - object.offsetHeight)}px`;
 
