@@ -17,19 +17,14 @@
 
 <body>
     <div id="object"></div>
-    <div id="Accelerometer_x"></div>
-    <div id="Accelerometer_y"></div>
+    <div id="Object_x"></div>
+    <div id="Object_y"></div>
     <button id="start_demo">Start Demo</button>
 
     <label for="damping_input">Damping Factor:</label>
     <input type="number" id="damping_input" value="0.8" step="0.01" min="0" max="1">
 
     <script>
-        function updateFieldIfNotNull(fieldName, value, precision = 10) {
-            if (value != null)
-                document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-        }
-
         let object = document.getElementById("object");
         let velocityX = 0;
         let velocityY = 0;
@@ -44,12 +39,13 @@
         object.style.left = `${initialLeft}px`;
         object.style.top = `${initialTop}px`;
 
+        function updateField(fieldName, value) {
+            document.getElementById(fieldName).innerHTML = value;
+        }
+
         function handleMotion(event) {
             const accelerationX = event.acceleration.x;
             const accelerationY = event.acceleration.y;
-
-            updateFieldIfNotNull("Accelerometer_x", accelerationX);
-            updateFieldIfNotNull("Accelerometer_y", accelerationY);
 
             // Calculate time difference since last update
             const currentTime = Date.now();
@@ -70,6 +66,10 @@
             // Ensure the object stays within the bounds of the screen
             object.style.left = `${Math.min(Math.max(newLeft, 0), screenWidth - object.offsetWidth)}px`;
             object.style.top = `${Math.min(Math.max(newTop, 0), screenHeight - object.offsetHeight)}px`;
+
+            // Update x and y axis of the object
+            updateField("Object_x", Math.round(newLeft));
+            updateField("Object_y", Math.round(newTop));
 
             // Update lastTime for next iteration
             lastTime = currentTime;
