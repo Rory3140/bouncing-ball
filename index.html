@@ -21,15 +21,12 @@
     <div id="Object_y"></div>
     <button id="start_demo">Start Demo</button>
 
-    <label for="damping_input">Damping Factor:</label>
-    <input type="number" id="damping_input" value="0.8" step="0.01" min="0" max="1">
-
     <script>
         let object = document.getElementById("object");
         let velocityX = 0;
         let velocityY = 0;
         let lastTime = null;
-        let damping = 0.8; // Initial damping factor
+        const movementFactor = 0.5; // Sensitivity factor for object movement
 
         // Center the object in the middle of the screen
         const screenWidth = window.innerWidth;
@@ -44,20 +41,16 @@
         }
 
         function handleMotion(event) {
-            const accelerationX = event.acceleration.x;
-            const accelerationY = event.acceleration.y;
-
             // Calculate time difference since last update
             const currentTime = Date.now();
             const deltaTime = lastTime ? (currentTime - lastTime) / 1000 : 0;
 
-            // Calculate new velocity based on accelerometer data
-            velocityX += accelerationX * deltaTime;
-            velocityY += accelerationY * deltaTime;
+            // Update object position based on a fixed movement factor
+            const movementX = (event.acceleration.x || 0) * movementFactor;
+            const movementY = (event.acceleration.y || 0) * movementFactor;
 
-            // Apply damping to simulate inertia
-            velocityX *= damping;
-            velocityY *= damping;
+            velocityX += movementX;
+            velocityY += movementY;
 
             // Update object position
             const newLeft = object.offsetLeft + velocityX;
@@ -93,11 +86,6 @@
                 window.addEventListener("devicemotion", handleMotion);
             }
         };
-
-        // Update damping factor when input changes
-        document.getElementById("damping_input").addEventListener("change", function () {
-            damping = parseFloat(this.value);
-        });
     </script>
 </body>
 
