@@ -31,7 +31,15 @@
         let velocityX = 0;
         let velocityY = 0;
         let lastTime = null;
-        const damping = 0.9; // Damping factor for simulating inertia
+        const damping = 0.8; // Damping factor for simulating inertia
+
+        // Center the object in the middle of the screen
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const initialLeft = (screenWidth - object.offsetWidth) / 2;
+        const initialTop = (screenHeight - object.offsetHeight) / 2;
+        object.style.left = `${initialLeft}px`;
+        object.style.top = `${initialTop}px`;
 
         function handleMotion(event) {
             const accelerationX = event.acceleration.x;
@@ -39,14 +47,6 @@
 
             updateFieldIfNotNull("Accelerometer_x", accelerationX);
             updateFieldIfNotNull("Accelerometer_y", accelerationY);
-
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
-
-            // Map accelerometer values to screen coordinates
-            // Reverse the Y-axis due to different coordinate systems
-            const newX = (accelerationX / 10) * (screenWidth / 2) + (screenWidth / 2);
-            const newY = (-accelerationY / 10) * (screenHeight / 2) + (screenHeight / 2);
 
             // Calculate time difference since last update
             const currentTime = Date.now();
