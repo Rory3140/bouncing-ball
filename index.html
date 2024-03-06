@@ -64,6 +64,10 @@
             const newLeft = object.offsetLeft + velocityX;
             const newTop = object.offsetTop + velocityY;
 
+            // Update object position faster
+            newLeft *= 5;
+            newTop *= 5;
+
             // Ensure the object stays within the bounds of the screen
             object.style.left = `${Math.min(Math.max(newLeft, 0), screenWidth - object.offsetWidth)}px`;
             object.style.top = `${Math.min(Math.max(newTop, 0), screenHeight - object.offsetHeight)}px`;
