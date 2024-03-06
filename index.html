@@ -5,10 +5,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bouncing Button</title>
+    <style>
+        #object {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+        }
+    </style>
 </head>
 
 <body>
     <main class="container">
+        <div id="object"></div>
         <div id="demo-div">
             <a id="start_demo">Start the demo</a>
 
@@ -16,8 +25,6 @@
             <ul>
                 <li>X-axis: <span id="Accelerometer_x">0</span><span> m/s<sup>2</sup></span></li>
                 <li>Y-axis: <span id="Accelerometer_y">0</span><span> m/s<sup>2</sup></span></li>
-                <li>Z-axis: <span id="Accelerometer_z">0</span><span> m/s<sup>2</sup></span></li>
-                <li>Data Interval: <span id="Accelerometer_i">0</span><span> ms</span></li>
             </ul>
 
         </div>
