@@ -1,10 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bouncing Button</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accelerometer Example</title>
     <style>
         #object {
             position: absolute;
@@ -16,20 +16,57 @@
 </head>
 
 <body>
-    <main class="container">
-        <div id="object"></div>
-        <div id="demo-div">
-            <a id="start_demo">Start the demo</a>
+    <div id="object"></div>
+    <div id="Accelerometer_x"></div>
+    <div id="Accelerometer_y"></div>
+    <button id="start_demo">Start Demo</button>
 
-            <h4>Accelerometer</h4>
-            <ul>
-                <li>X-axis: <span id="Accelerometer_x">0</span><span> m/s<sup>2</sup></span></li>
-                <li>Y-axis: <span id="Accelerometer_y">0</span><span> m/s<sup>2</sup></span></li>
-            </ul>
+    <script>
+        function updateFieldIfNotNull(fieldName, value, precision = 10) {
+            if (value != null)
+                document.getElementById(fieldName).innerHTML = value.toFixed(precision);
+        }
 
-        </div>
-    </main>
+        function handleMotion(event) {
+            const accelerationX = event.acceleration.x;
+            const accelerationY = event.acceleration.y;
 
-    <script src="script.js"></script>
+            updateFieldIfNotNull("Accelerometer_x", accelerationX);
+            updateFieldIfNotNull("Accelerometer_y", accelerationY);
+
+            const object = document.getElementById("object");
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            // Map accelerometer values to screen coordinates
+            // Reverse the Y-axis due to different coordinate systems
+            const newX = (accelerationX / 10) * (screenWidth / 2) + (screenWidth / 2);
+            const newY = (-accelerationY / 10) * (screenHeight / 2) + (screenHeight / 2);
+
+            // Set object position
+            object.style.left = `${newX}px`;
+            object.style.top = `${newY}px`;
+        }
+
+        let demo_button = document.getElementById("start_demo");
+        demo_button.onclick = function (e) {
+            e.preventDefault();
+
+            // Request permission for iOS 13+ devices
+            if (
+                DeviceMotionEvent &&
+                typeof DeviceMotionEvent.requestPermission === "function"
+            ) {
+                DeviceMotionEvent.requestPermission().then(response => {
+                    if (response === 'granted') {
+                        window.addEventListener("devicemotion", handleMotion);
+                    }
+                }).catch(console.error);
+            } else {
+                window.addEventListener("devicemotion", handleMotion);
+            }
+        };
+    </script>
 </body>
+
 </html>

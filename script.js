@@ -4,8 +4,8 @@ function updateFieldIfNotNull(fieldName, value, precision = 10) {
 }
 
 function handleMotion(event) {
-  const accelerationX = event.event.acceleration.x;
-  const accelerationY = event.event.acceleration.y;
+  const accelerationX = event.acceleration.x;
+  const accelerationY = event.acceleration.y;
 
   updateFieldIfNotNull("Accelerometer_x", accelerationX);
   updateFieldIfNotNull("Accelerometer_y", accelerationY);
