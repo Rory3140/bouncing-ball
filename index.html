@@ -54,11 +54,14 @@
 
             velocityX += movementX;
 
-            // Update object position
-            const newLeft = object.offsetLeft + velocityX;
+            // Attempt to update object position
+            let newLeft = object.offsetLeft + velocityX;
 
-            // Ensure the object stays within the bounds of the screen horizontally
-            object.style.left = `${Math.min(Math.max(newLeft, 0), screenWidth - object.offsetWidth)}px`;
+            // Ensure the object stays within the bounds of the screen
+            newLeft = Math.max(0, Math.min(newLeft, screenWidth - object.offsetWidth));
+
+            // Apply the constrained newLeft to the object
+            object.style.left = `${newLeft}px`;
 
             // Update x axis of the object
             updateField("Object_x", Math.round(newLeft));
