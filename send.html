@@ -2,23 +2,58 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Send data</title>
+    <title>Send Data</title>
 </head>
 
 <body>
-    <button id="button">Press</button>
-    <script>
-        // Establish WebSocket connection with the server
-        const ws = new WebSocket('ws://localhost:8080');
+    <h1>Send Data</h1>
+    <p>Send data to the Firebase Realtime Database.</p>
 
-        const button = document.getElementById("button");
-        button.addEventListener("click", function (e) {
-            e.preventDefault();
-            ws.send("Hello, server!");
+    <button id="send">Send Data</button>
+    <div id="output"></div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCHvwXIji75oFVqTHqTSTXN4Mrw_8Cqtg8",
+            authDomain: "bouncing-ball-rw.firebaseapp.com",
+            databaseURL: "https://bouncing-ball-rw-default-rtdb.firebaseio.com",
+            projectId: "bouncing-ball-rw",
+            storageBucket: "bouncing-ball-rw.appspot.com",
+            messagingSenderId: "353355833704",
+            appId: "1:353355833704:web:afcd68b1b8ab1fc9d3b6dd",
+            measurementId: "G-4DN6DJKY30"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        // Get a reference to the database service
+        const database = getDatabase(app);
+
+        let count = 0;
+        const sendButton = document.getElementById('send');
+        sendButton.addEventListener('click', () => {
+            count++;
+            set(ref(database, 'orientationData'), {
+                orientation: count
+            });
         });
-        
+
+        const output = document.getElementById('output');
+        const dbRef = ref(database, 'orientationData');
+        onValue(dbRef, (snapshot) => {
+            const data = snapshot.val();
+            output.innerText = data.orientation;
+        });
+
+
     </script>
 </body>
 
