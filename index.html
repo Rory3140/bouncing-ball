@@ -98,6 +98,10 @@
                 toggleButton.textContent = "Start";
                 // Stop listening to device orientation
                 stopListening();
+                // Reset object's position
+                set(ref(database, 'orientationData'), {
+                    orientation: 0
+                });
             }
         });
 
