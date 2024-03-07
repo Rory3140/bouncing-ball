@@ -11,6 +11,7 @@
             width: 50px;
             height: 50px;
             background-color: red;
+            display: none;
         }
     </style>
 </head>
@@ -21,10 +22,31 @@
     <button id="button">Start</button>
 
     <script>
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
         const object = document.getElementById("object");
         let screenWidth = window.innerWidth;
         let screenHeight = window.innerHeight;
         let demoIsActive = false;
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCHvwXIji75oFVqTHqTSTXN4Mrw_8Cqtg8",
+            authDomain: "bouncing-ball-rw.firebaseapp.com",
+            databaseURL: "https://bouncing-ball-rw-default-rtdb.firebaseio.com",
+            projectId: "bouncing-ball-rw",
+            storageBucket: "bouncing-ball-rw.appspot.com",
+            messagingSenderId: "353355833704",
+            appId: "1:353355833704:web:afcd68b1b8ab1fc9d3b6dd",
+            measurementId: "G-4DN6DJKY30"
+        };
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        // Get a reference to the database service
+        const database = getDatabase(app);
+
 
         // Function to center the object on both X and Y axis
         function centerObject() {
@@ -38,9 +60,16 @@
         const moveSpeed = 5;
 
         function handleOrientation(event) {
-            if (!demoIsActive) return; 
+            if (!demoIsActive) return;
 
             const gamma = event.gamma; // Left-to-right tilt in degrees
+
+            // Send gamma value to the server
+            const dbRef = ref(database, 'orientationData');
+            set(dbRef, {
+                orientation: gamma
+            });
+
             // Determine movement direction based on gamma value
             let direction = gamma > 5 ? 1 : gamma < -5 ? -1 : 0;
 
@@ -61,11 +90,13 @@
             isActive = !isActive;
 
             if (isActive) {
+                object.style.display = "block";
                 // Change button text to "Stop"
                 toggleButton.textContent = "Stop";
                 // Start listening to device orientation
                 startListening();
             } else {
+                object.style.display = "none";
                 // Change button text to "Start"
                 toggleButton.textContent = "Start";
                 // Stop listening to device orientation
