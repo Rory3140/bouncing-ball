@@ -26,19 +26,13 @@
 
     <script>
         const object = document.getElementById("object");
-        const sensitivitySlider = document.getElementById("sensitivitySlider");
-
-        let velocityX = 0;
         let lastTime = null;
+        const speed = 5; // Pixels per update, representing constant speed of movement
 
         // Center the object in the middle of the screen horizontally
         const screenWidth = window.innerWidth;
         const initialLeft = (screenWidth - object.offsetWidth) / 2;
         object.style.left = `${initialLeft}px`;
-        // Initially position the object in the vertical middle, but do not update it anymore
-        const screenHeight = window.innerHeight;
-        const initialTop = (screenHeight - object.offsetHeight) / 2;
-        object.style.top = `${initialTop}px`;
 
         function updateField(fieldName, value) {
             document.getElementById(fieldName).innerHTML = value;
@@ -47,24 +41,20 @@
         function handleMotion(event) {
             const currentTime = Date.now();
             const deltaTime = lastTime ? (currentTime - lastTime) / 1000 : 0;
-            const movementFactor = parseFloat(sensitivitySlider.value);
 
-            // Update object position based only on X-axis movement
-            const movementX = (event.acceleration.x || 0) * movementFactor;
+            let movementX = event.acceleration.x || 0;
 
-            velocityX += movementX;
-
-            // Attempt to update object position
-            let newLeft = object.offsetLeft + velocityX;
-
-            // Ensure the object stays within the bounds of the screen
-            newLeft = Math.max(0, Math.min(newLeft, screenWidth - object.offsetWidth));
-
-            // Apply the constrained newLeft to the object
-            object.style.left = `${newLeft}px`;
+            // Determine direction based on the sign of acceleration.x and move at a constant speed
+            if (movementX > 0) {
+                // Move right
+                object.style.left = `${Math.min(screenWidth - object.offsetWidth, object.offsetLeft + speed)}px`;
+            } else if (movementX < 0) {
+                // Move left
+                object.style.left = `${Math.max(0, object.offsetLeft - speed)}px`;
+            }
 
             // Update x axis of the object
-            updateField("Object_x", Math.round(newLeft));
+            updateField("Object_x", Math.round(object.offsetLeft));
 
             // Update lastTime for next iteration
             lastTime = currentTime;
@@ -86,6 +76,7 @@
             }
         };
     </script>
+
 </body>
 
 </html>
