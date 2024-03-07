@@ -18,7 +18,6 @@
 <body>
     <div id="object"></div>
     <div id="Object_x"></div>
-    <div id="Object_y"></div>
     <div>
         <label for="sensitivitySlider">Sensitivity: </label>
         <input type="range" id="sensitivitySlider" min="0.1" max="2" step="0.1" value="0.5">
@@ -30,16 +29,15 @@
         const sensitivitySlider = document.getElementById("sensitivitySlider");
 
         let velocityX = 0;
-        let velocityY = 0;
         let lastTime = null;
-        const movementFactor = parseFloat(sensitivitySlider.value);
 
-        // Center the object in the middle of the screen
+        // Center the object in the middle of the screen horizontally
         const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
         const initialLeft = (screenWidth - object.offsetWidth) / 2;
-        const initialTop = (screenHeight - object.offsetHeight) / 2;
         object.style.left = `${initialLeft}px`;
+        // Initially position the object in the vertical middle, but do not update it anymore
+        const screenHeight = window.innerHeight;
+        const initialTop = (screenHeight - object.offsetHeight) / 2;
         object.style.top = `${initialTop}px`;
 
         function updateField(fieldName, value) {
@@ -47,28 +45,23 @@
         }
 
         function handleMotion(event) {
-            // Calculate time difference since last update
             const currentTime = Date.now();
             const deltaTime = lastTime ? (currentTime - lastTime) / 1000 : 0;
+            const movementFactor = parseFloat(sensitivitySlider.value);
 
-            // Update object position based on a fixed movement factor
+            // Update object position based only on X-axis movement
             const movementX = (event.acceleration.x || 0) * movementFactor;
-            const movementY = (event.acceleration.y || 0) * movementFactor;
 
             velocityX += movementX;
-            velocityY += movementY;
 
             // Update object position
             const newLeft = object.offsetLeft + velocityX;
-            const newTop = object.offsetTop + velocityY;
 
-            // Ensure the object stays within the bounds of the screen
+            // Ensure the object stays within the bounds of the screen horizontally
             object.style.left = `${Math.min(Math.max(newLeft, 0), screenWidth - object.offsetWidth)}px`;
-            object.style.top = `${Math.min(Math.max(newTop, 0), screenHeight - object.offsetHeight)}px`;
 
-            // Update x and y axis of the object
+            // Update x axis of the object
             updateField("Object_x", Math.round(newLeft));
-            updateField("Object_y", Math.round(newTop));
 
             // Update lastTime for next iteration
             lastTime = currentTime;
@@ -79,10 +72,7 @@
             e.preventDefault();
 
             // Request permission for iOS 13+ devices
-            if (
-                DeviceMotionEvent &&
-                typeof DeviceMotionEvent.requestPermission === "function"
-            ) {
+            if (DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function") {
                 DeviceMotionEvent.requestPermission().then(response => {
                     if (response === 'granted') {
                         window.addEventListener("devicemotion", handleMotion);
