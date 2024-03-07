@@ -45,7 +45,7 @@
             document.getElementById(fieldName).innerHTML = value;
         }
 
-        const sensitivity = sensitivitySlider.value;
+        const sensitivity = parseFloat(sensitivitySlider.value);
         let lastX = 0; // Last processed position
 
         function handleMotion(event) {
