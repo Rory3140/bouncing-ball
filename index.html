@@ -18,9 +18,30 @@
 <body>
     <div id="object"></div>
     <div id="Object_x"></div>
-    <button id="start_demo">Start Demo</button>
+    <button id="start">Start</button>
 
-    <script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCHvwXIji75oFVqTHqTSTXN4Mrw_8Cqtg8",
+            authDomain: "bouncing-ball-rw.firebaseapp.com",
+            databaseURL: "https://bouncing-ball-rw-default-rtdb.firebaseio.com",
+            projectId: "bouncing-ball-rw",
+            storageBucket: "bouncing-ball-rw.appspot.com",
+            messagingSenderId: "353355833704",
+            appId: "1:353355833704:web:afcd68b1b8ab1fc9d3b6dd",
+            measurementId: "G-4DN6DJKY30"
+        };
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        // Get a reference to the database service
+        const database = getDatabase(app);
+
         const object = document.getElementById("object");
         let screenWidth = window.innerWidth;
         let screenHeight = window.innerHeight;
@@ -43,6 +64,12 @@
             if (!demoIsActive) return; // Exit if demo is not active
 
             const gamma = event.gamma; // Left-to-right tilt in degrees
+
+            // Send data to the Firebase Realtime Database
+            set(ref(database, 'orientationData'), {
+                orientation: gamma
+            });
+
             // Determine movement direction based on gamma value
             let direction = gamma > 5 ? 1 : gamma < -5 ? -1 : 0;
 
@@ -56,19 +83,19 @@
             object.style.left = `${newLeft}px`;
         }
 
-        const toggleButton = document.getElementById("start_demo");
+        const toggleButton = document.getElementById("start");
         toggleButton.addEventListener("click", function (e) {
             e.preventDefault();
-            demoIsActive = !demoIsActive; // Toggle the state of the demo
+            demoIsActive = !demoIsActive;
 
             if (demoIsActive) {
-                // Change button text to "Stop Demo"
-                toggleButton.textContent = "Stop Demo";
+                // Change button text to "Stop"
+                toggleButton.textContent = "Stop";
                 // Start listening to device orientation
                 startListening();
             } else {
-                // Change button text to "Start Demo"
-                toggleButton.textContent = "Start Demo";
+                // Change button text to "Start"
+                toggleButton.textContent = "Start";
                 // Stop listening to device orientation
                 stopListening();
             }
