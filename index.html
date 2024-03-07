@@ -18,46 +18,49 @@
 <body>
     <div id="object"></div>
     <div id="Object_x"></div>
-    <div>
-        <label for="sensitivitySlider">Sensitivity: </label>
-        <input type="range" id="sensitivitySlider" min="0.1" max="2" step="0.1" value="0.5">
-    </div>
+    <div id="Object_y"></div>
     <button id="start_demo">Start Demo</button>
 
     <script>
         const object = document.getElementById("object");
-        let lastTime = null;
-        const speed = 5; // Pixels per update, representing constant speed of movement
+        let screenWidth = window.innerWidth;
+        let screenHeight = window.innerHeight;
 
-        // Center the object in the middle of the screen horizontally
-        const screenWidth = window.innerWidth;
-        const initialLeft = (screenWidth - object.offsetWidth) / 2;
-        object.style.left = `${initialLeft}px`;
+        // Center the object in the middle of the screen
+        function centerObject() {
+            const initialLeft = (screenWidth - object.offsetWidth) / 2;
+            const initialTop = (screenHeight - object.offsetHeight) / 2;
+            object.style.left = `${initialLeft}px`;
+            object.style.top = `${initialTop}px`;
+            updateField("Object_x", Math.round(initialLeft));
+            updateField("Object_y", Math.round(initialTop));
+        }
+
+        centerObject(); // Center the object initially
 
         function updateField(fieldName, value) {
             document.getElementById(fieldName).innerHTML = value;
         }
 
+        const sensitivity = 0.1; // Lower value for less sensitivity
+        let lastX = 0; // Last processed position
+
         function handleMotion(event) {
-            const currentTime = Date.now();
-            const deltaTime = lastTime ? (currentTime - lastTime) / 1000 : 0;
+            const accelerationX = event.accelerationIncludingGravity.x || 0;
 
-            let movementX = event.acceleration.x || 0;
+            // Only update if significant move to reduce sensitivity
+            if (Math.abs(accelerationX - lastX) > sensitivity) {
+                lastX = accelerationX;
 
-            // Determine direction based on the sign of acceleration.x and move at a constant speed
-            if (movementX > 0) {
-                // Move right
-                object.style.left = `${Math.min(screenWidth - object.offsetWidth, object.offsetLeft + speed)}px`;
-            } else if (movementX < 0) {
-                // Move left
-                object.style.left = `${Math.max(0, object.offsetLeft - speed)}px`;
+                const currentLeft = object.offsetLeft;
+                let newLeft = currentLeft + accelerationX;
+
+                // Smooth movement with requestAnimationFrame
+                requestAnimationFrame(() => {
+                    object.style.left = `${Math.max(0, Math.min(screenWidth - object.offsetWidth, newLeft))}px`;
+                    updateField("Object_x", Math.round(object.offsetLeft));
+                });
             }
-
-            // Update x axis of the object
-            updateField("Object_x", Math.round(object.offsetLeft));
-
-            // Update lastTime for next iteration
-            lastTime = currentTime;
         }
 
         const demo_button = document.getElementById("start_demo");
@@ -75,8 +78,14 @@
                 window.addEventListener("devicemotion", handleMotion);
             }
         };
-    </script>
 
+        // Handle screen resize to keep object centered
+        window.onresize = function () {
+            screenWidth = window.innerWidth;
+            screenHeight = window.innerHeight;
+            centerObject(); // Re-center the object when the window size changes
+        };
+    </script>
 </body>
 
 </html>
