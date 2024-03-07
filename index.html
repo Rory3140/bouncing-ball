@@ -11,7 +11,6 @@
             width: 50px;
             height: 50px;
             background-color: red;
-            display: none;
         }
     </style>
 </head>
@@ -23,8 +22,8 @@
 
     <script>
         // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        // import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
         const object = document.getElementById("object");
         let screenWidth = window.innerWidth;
@@ -90,13 +89,11 @@
             isActive = !isActive;
 
             if (isActive) {
-                object.style.display = "block";
                 // Change button text to "Stop"
                 toggleButton.textContent = "Stop";
                 // Start listening to device orientation
                 startListening();
             } else {
-                object.style.display = "none";
                 // Change button text to "Start"
                 toggleButton.textContent = "Start";
                 // Stop listening to device orientation
