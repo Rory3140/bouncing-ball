@@ -43,9 +43,9 @@
             measurementId: "G-4DN6DJKY30"
         };
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        // Get a reference to the database service
-        const database = getDatabase(app);
+        // const app = initializeApp(firebaseConfig);
+        // // Get a reference to the database service
+        // const database = getDatabase(app);
 
 
         // Function to center the object on both X and Y axis
@@ -65,10 +65,10 @@
             const gamma = event.gamma; // Left-to-right tilt in degrees
 
             // Send gamma value to the server
-            const dbRef = ref(database, 'orientationData');
-            set(dbRef, {
-                orientation: gamma
-            });
+            // const dbRef = ref(database, 'orientationData');
+            // set(dbRef, {
+            //     orientation: gamma
+            // });
 
             // Determine movement direction based on gamma value
             let direction = gamma > 5 ? 1 : gamma < -5 ? -1 : 0;
