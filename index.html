@@ -99,6 +99,7 @@
                 // Stop listening to device orientation
                 stopListening();
                 // Reset object's position
+                centerObject();
                 set(ref(database, 'orientationData'), {
                     orientation: 0
                 });
