@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Receive data</title>
+</head>
+
+<body>
+    <div id="display"></div>
+    <script>
+        // Establish WebSocket connection with the server
+        const ws = new WebSocket('ws://localhost:8080');
+        ws.binaryType = 'blob'; // Set binaryType to handle text data correctly
+        const display = document.getElementById("display");
+
+        ws.onmessage = function (event) {
+            // Check if the received data is of type Blob
+            if (event.data instanceof Blob) {
+                // Create a new FileReader to read the Blob as text
+                const reader = new FileReader();
+                reader.onload = function () {
+                    // Display the text data in the display element
+                    display.innerText = reader.result;
+                };
+                reader.readAsText(event.data); // Read the Blob as text
+            } else {
+                // If the data is not a Blob, display it directly
+                display.innerText = event.data;
+            }
+        };
+    </script>
+</body>
+
+</html>

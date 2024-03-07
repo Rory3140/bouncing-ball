@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Send data</title>
+</head>
+
+<body>
+    <button id="button">Press</button>
+    <script>
+        // Establish WebSocket connection with the server
+        const ws = new WebSocket('ws://localhost:8080');
+
+        const button = document.getElementById("button");
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+            ws.send("Hello, server!");
+        });
+        
+    </script>
+</body>
+
+</html>

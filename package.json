@@ -1,0 +1,16 @@
+{
+  "name": "bouncing-ball",
+  "version": "1.0.0",
+  "description": "A JavaScript project that uses the gyroscope of a mobile device control a paddle to keep a ball bouncing on a separate display.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

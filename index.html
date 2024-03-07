@@ -18,13 +18,13 @@
 <body>
     <div id="object"></div>
     <div id="Object_x"></div>
-    <button id="start_demo">Start Demo</button>
+    <button id="button">Start</button>
 
     <script>
         const object = document.getElementById("object");
         let screenWidth = window.innerWidth;
         let screenHeight = window.innerHeight;
-        let demoIsActive = false; // Track whether the demo is active
+        let demoIsActive = false;
 
         // Function to center the object on both X and Y axis
         function centerObject() {
@@ -33,14 +33,12 @@
             object.style.left = `${initialLeft}px`;
             object.style.top = `${initialTop}px`;
         }
-
-        // Initial centering of the object
         centerObject();
 
-        const moveSpeed = 5; // Speed of object movement
+        const moveSpeed = 5;
 
         function handleOrientation(event) {
-            if (!demoIsActive) return; // Exit if demo is not active
+            if (!demoIsActive) return; 
 
             const gamma = event.gamma; // Left-to-right tilt in degrees
             // Determine movement direction based on gamma value
@@ -53,22 +51,23 @@
             // Ensure the object remains within screen bounds
             newLeft = Math.max(0, Math.min(screenWidth - object.offsetWidth, newLeft));
 
+            // Update the object's position
             object.style.left = `${newLeft}px`;
         }
 
-        const toggleButton = document.getElementById("start_demo");
+        const toggleButton = document.getElementById("button");
         toggleButton.addEventListener("click", function (e) {
             e.preventDefault();
-            demoIsActive = !demoIsActive; // Toggle the state of the demo
+            isActive = !isActive;
 
-            if (demoIsActive) {
-                // Change button text to "Stop Demo"
-                toggleButton.textContent = "Stop Demo";
+            if (isActive) {
+                // Change button text to "Stop"
+                toggleButton.textContent = "Stop";
                 // Start listening to device orientation
                 startListening();
             } else {
-                // Change button text to "Start Demo"
-                toggleButton.textContent = "Start Demo";
+                // Change button text to "Start"
+                toggleButton.textContent = "Start";
                 // Stop listening to device orientation
                 stopListening();
             }
