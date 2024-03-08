@@ -1,3 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #474F7A;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+    background-color: #474F7A;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
 button {
     background-color: #4CAF50;
     color: white;
@@ -6,13 +27,43 @@ button {
     border: none;
     cursor: pointer;
     width: 100%;
+    border-radius: 20px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+#stop {
+    background-color: #FF4545;
+    width: 100px;
+    height: 30px;
+    padding: 0;
+    margin: 10px;
+    display: none;
+}
+
+#container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #6962AD;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
 }
 
 #object {
     position: absolute;
-    bottom: 50px;
-    width: 100px;
-    height: 50px;
-    background-color: red;
-    border-radius: 10px;
+    bottom: 20px;
+    width: 20%;
+    height: 30px;
+    background-color: #FF4545;
+    border-radius: 20px;
 }

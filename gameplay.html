@@ -10,15 +10,18 @@
 
 <body>
     <div id="object"></div>
-    <button id="start">Start</button>
+    <div id="container">
+        <h1>Bouncing Ball</h1>
+        <button id="start">Start Game</button>
+    </div>
+    <button id="stop">Stop</button>
+
 
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        //Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCHvwXIji75oFVqTHqTSTXN4Mrw_8Cqtg8",
             authDomain: "bouncing-ball-rw.firebaseapp.com",
@@ -29,23 +32,19 @@
             appId: "1:353355833704:web:afcd68b1b8ab1fc9d3b6dd",
             measurementId: "G-4DN6DJKY30"
         };
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        // Get a reference to the database service
         const database = getDatabase(app);
 
         const object = document.getElementById("object");
         let screenWidth = window.innerWidth;
         let screenHeight = window.innerHeight;
         let isActive = false;
-        const moveSpeed = 5;
+        const moveSpeed = 10;
 
-        // Function to center the object on both X and Y axis
         function centerObject() {
             const initialLeft = (screenWidth - object.offsetWidth) / 2;
             object.style.left = `${initialLeft}px`;
         }
-        // Initial centering of the object
         centerObject();
 
         function handleOrientation(gamma) {
@@ -64,8 +63,36 @@
 
         const dbRef = ref(database, 'orientationData');
         onValue(dbRef, (snapshot) => {
+            if (!isActive) return;
             const data = snapshot.val();
             handleOrientation(data.orientation);
+        });
+
+        const button = document.getElementById("start");
+        const stopButton = document.getElementById("stop");
+        const container = document.getElementById("container");
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+            isActive = !isActive;
+            container.style.display = "none";
+            stopButton.style.display = "block";
+        });
+
+        stopButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            isActive = !isActive;
+            container.style.display = "block";
+            stopButton.style.display = "none";
+            centerObject();
+            set(ref(database, 'orientationData'), {
+                orientation: 0
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            screenWidth = window.innerWidth;
+            screenHeight = window.innerHeight;
+            centerObject();
         });
     </script>
 </body>
