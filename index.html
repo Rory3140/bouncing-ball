@@ -4,130 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Accelerometer Example</title>
-    <style>
-        #object {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: red;
-        }
-    </style>
+    <title>Bouncing Ball</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="object"></div>
-    <div id="Object_x"></div>
-    <button id="start">Start</button>
-
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyCHvwXIji75oFVqTHqTSTXN4Mrw_8Cqtg8",
-            authDomain: "bouncing-ball-rw.firebaseapp.com",
-            databaseURL: "https://bouncing-ball-rw-default-rtdb.firebaseio.com",
-            projectId: "bouncing-ball-rw",
-            storageBucket: "bouncing-ball-rw.appspot.com",
-            messagingSenderId: "353355833704",
-            appId: "1:353355833704:web:afcd68b1b8ab1fc9d3b6dd",
-            measurementId: "G-4DN6DJKY30"
-        };
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        // Get a reference to the database service
-        const database = getDatabase(app);
-
-        const object = document.getElementById("object");
-        let screenWidth = window.innerWidth;
-        let screenHeight = window.innerHeight;
-        let demoIsActive = false; // Track whether the demo is active
-
-        // Function to center the object on both X and Y axis
-        function centerObject() {
-            const initialLeft = (screenWidth - object.offsetWidth) / 2;
-            const initialTop = (screenHeight - object.offsetHeight) / 2;
-            object.style.left = `${initialLeft}px`;
-            object.style.top = `${initialTop}px`;
-        }
-
-        // Initial centering of the object
-        centerObject();
-
-        const moveSpeed = 5; // Speed of object movement
-
-        function handleOrientation(event) {
-            if (!demoIsActive) return; // Exit if demo is not active
-
-            const gamma = event.gamma; // Left-to-right tilt in degrees
-
-            // Send data to the Firebase Realtime Database
-            set(ref(database, 'orientationData'), {
-                orientation: gamma
-            });
-
-            // Determine movement direction based on gamma value
-            let direction = gamma > 5 ? 1 : gamma < -5 ? -1 : 0;
-
-            // Update object's position at a constant speed
-            const currentLeft = parseInt(object.style.left, 10);
-            let newLeft = currentLeft + (moveSpeed * direction);
-
-            // Ensure the object remains within screen bounds
-            newLeft = Math.max(0, Math.min(screenWidth - object.offsetWidth, newLeft));
-
-            object.style.left = `${newLeft}px`;
-        }
-
-        const toggleButton = document.getElementById("start");
-        toggleButton.addEventListener("click", function (e) {
-            e.preventDefault();
-            demoIsActive = !demoIsActive;
-
-            if (demoIsActive) {
-                // Change button text to "Stop"
-                toggleButton.textContent = "Stop";
-                // Start listening to device orientation
-                startListening();
-            } else {
-                // Change button text to "Start"
-                toggleButton.textContent = "Start";
-                // Stop listening to device orientation
-                stopListening();
-                // Reset object's position
-                centerObject();
-                set(ref(database, 'orientationData'), {
-                    orientation: 0
-                });
-            }
-        });
-
-        function startListening() {
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission().then(response => {
-                    if (response == 'granted') {
-                        window.addEventListener('deviceorientation', handleOrientation);
-                    }
-                }).catch(console.error);
-            } else {
-                window.addEventListener('deviceorientation', handleOrientation);
-            }
-        }
-
-        function stopListening() {
-            window.removeEventListener('deviceorientation', handleOrientation);
-        }
-
-        window.addEventListener('resize', () => {
-            screenWidth = window.innerWidth;
-            screenHeight = window.innerHeight;
-            centerObject(); // Re-center the object on resize
-        });
-    </script>
+    <h1>Bouncing Ball</h1>
+    <a href="controller.html">Controller</a>
+    <a href="gameplay.html">Gameplay</a>
 </body>
 
 </html>
