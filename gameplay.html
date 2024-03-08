@@ -13,6 +13,8 @@
     <div id="container">
         <h1>Bouncing Ball</h1>
         <button id="start">Start Game</button>
+        <label for="slider">Speed: <span id="speed"></span></label>
+        <input type="range" min="1" max="10" value="5.5" step="0.1" id="slider">
     </div>
     <button id="stop">Stop</button>
 
@@ -36,11 +38,21 @@
         const database = getDatabase(app);
 
         const object = document.getElementById("object");
-        let screenWidth = window.innerWidth;
-        let screenHeight = window.innerHeight;
         let isActive = false;
-        const moveSpeed = 10;
 
+        // Set the initial speed value
+        const slider = document.getElementById("slider");
+        const speedValue = document.getElementById("speed");
+        let moveSpeed = slider.value;
+        speedValue.textContent = moveSpeed - 0.5;
+
+        // Update the speed value when the slider is moved
+        slider.addEventListener("input", function () {
+            moveSpeed = slider.value;
+            speedValue.textContent = moveSpeed;
+        });
+
+        let screenWidth = window.innerWidth;
         function centerObject() {
             const initialLeft = (screenWidth - object.offsetWidth) / 2;
             object.style.left = `${initialLeft}px`;
@@ -71,6 +83,7 @@
         const button = document.getElementById("start");
         const stopButton = document.getElementById("stop");
         const container = document.getElementById("container");
+
         button.addEventListener("click", function (e) {
             e.preventDefault();
             isActive = !isActive;
@@ -81,7 +94,7 @@
         stopButton.addEventListener("click", function (e) {
             e.preventDefault();
             isActive = !isActive;
-            container.style.display = "block";
+            container.style.display = "flex";
             stopButton.style.display = "none";
             centerObject();
             set(ref(database, 'orientationData'), {
@@ -91,7 +104,6 @@
 
         window.addEventListener('resize', () => {
             screenWidth = window.innerWidth;
-            screenHeight = window.innerHeight;
             centerObject();
         });
     </script>

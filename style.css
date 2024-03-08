@@ -10,13 +10,31 @@ h1 {
     color: #fff;
 }
 
+h2 {
+    text-align: center;
+    color: #fff;
+}
+
+p {
+    text-align: center;
+    color: #fff;
+}
+
 a {
     color: #fff;
     text-decoration: none;
-    background-color: #474F7A;
-    padding: 10px;
+    background-color: #FF4545;
+    padding: 20px;
     border-radius: 10px;
     margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+}
+
+a:hover {
+    opacity: 0.8;
 }
 
 button {
@@ -34,6 +52,36 @@ button:hover {
     opacity: 0.8;
 }
 
+label   {
+    color: #fff;
+    margin: 10px;
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: #6962AD;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+#links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
 #stop {
     background-color: #FF4545;
     width: 100px;
@@ -43,21 +91,6 @@ button:hover {
     display: none;
 }
 
-#container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    padding: 20px;
-    border-radius: 20px;
-    background-color: #6962AD;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-}
 
 #object {
     position: absolute;
