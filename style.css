@@ -50,16 +50,36 @@ label {
     background-color: #FF4545;
     padding: 20px;
     border-radius: 10px;
-    margin: 10px;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
+    width: 150px;
     font-weight: bold;
 }
 
 .link:hover {
     opacity: 0.8;
+}
+
+.home {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: larger;
+    z-index: -1;
+}
+
+.home:hover {
+    opacity: 0.8;
+}
+
+#top-bar{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px;
 }
 
 #container {
@@ -68,20 +88,21 @@ label {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
-    padding: 50px;
+    padding: 20px;
     border-radius: 20px;
     background-color: #6962AD;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
     z-index: 2;
 }
 
 #link-container {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }
