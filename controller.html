@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div id="object" style="top: 10px;"></div>
+    <div id="paddle" style="top: 10px;"></div>
 
     <div id="top-bar">
         <a href="index.html" class="home"><i class="fa fa-arrow-left"></i></a>
@@ -21,100 +21,7 @@
     </div>
 
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCHvwXIji75oFVqTHqTSTXN4Mrw_8Cqtg8",
-            authDomain: "bouncing-ball-rw.firebaseapp.com",
-            databaseURL: "https://bouncing-ball-rw-default-rtdb.firebaseio.com",
-            projectId: "bouncing-ball-rw",
-            storageBucket: "bouncing-ball-rw.appspot.com",
-            messagingSenderId: "353355833704",
-            appId: "1:353355833704:web:afcd68b1b8ab1fc9d3b6dd",
-            measurementId: "G-4DN6DJKY30"
-        };
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        const object = document.getElementById("object");
-        let isActive = false;
-        const moveSpeed = 5;
-
-        let screenWidth = window.innerWidth;
-        function centerObject() {
-            const initialLeft = (screenWidth - object.offsetWidth) / 2;
-            object.style.left = `${initialLeft}px`;
-        }
-        centerObject();
-
-        function handleOrientation(event) {
-            if (!isActive) return; // Exit if not active
-
-            const gamma = event.gamma; // Left-to-right tilt in degrees
-
-            // Send data to the Firebase Realtime Database
-            set(ref(database, 'orientationData'), {
-                orientation: gamma
-            });
-
-            // Determine movement direction based on gamma value
-            let direction = gamma > 5 ? 1 : gamma < -5 ? -1 : 0;
-
-            // Update object's position at a constant speed
-            const currentLeft = parseInt(object.style.left, 10);
-            let newLeft = currentLeft + (moveSpeed * direction);
-
-            // Ensure the object remains within screen bounds
-            newLeft = Math.max(0, Math.min(screenWidth - object.offsetWidth, newLeft));
-
-            object.style.left = `${newLeft}px`;
-        }
-
-        function startListening() {
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission().then(response => {
-                    if (response == 'granted') {
-                        window.addEventListener('deviceorientation', handleOrientation);
-                    }
-                }).catch(console.error);
-            } else {
-                window.addEventListener('deviceorientation', handleOrientation);
-            }
-        }
-
-        function stopListening() {
-            window.removeEventListener('deviceorientation', handleOrientation);
-        }
-
-        const toggleButton = document.getElementById("start");
-        toggleButton.addEventListener("click", function (e) {
-            e.preventDefault();
-            isActive = !isActive;
-
-            if (isActive) {
-                // Change button text to "Stop"
-                toggleButton.textContent = "Stop";
-                startListening();
-            } else {
-                // Change button text to "Start"
-                toggleButton.textContent = "Start";
-                stopListening();
-                // Reset object's position
-                centerObject();
-                set(ref(database, 'orientationData'), {
-                    orientation: 0
-                });
-            }
-        });
-
-        window.addEventListener('resize', () => {
-            screenWidth = window.innerWidth;
-            centerObject();
-        });
-    </script>
+    <script src="controller.js" type="module"></script>
 </body>
 
 </html>
