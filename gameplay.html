@@ -10,8 +10,12 @@
 
 <body>
     <div id="object"></div>
+    <div id="ball"></div>
+    <div id="score"></div>
+
     <div id="container">
         <h1>Bouncing Ball</h1>
+        <p></p>
         <button id="start">Start Game</button>
         <label for="slider">Speed: <span id="speed"></span></label>
         <input type="range" min="1" max="10" value="5.5" step="0.1" id="slider">
@@ -20,10 +24,7 @@
 
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
-        //Firebase configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCHvwXIji75oFVqTHqTSTXN4Mrw_8Cqtg8",
             authDomain: "bouncing-ball-rw.firebaseapp.com",
@@ -34,10 +35,15 @@
             appId: "1:353355833704:web:afcd68b1b8ab1fc9d3b6dd",
             measurementId: "G-4DN6DJKY30"
         };
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
         const object = document.getElementById("object");
+        const ball = document.getElementById("ball");
         let isActive = false;
 
         // Set the initial speed value
@@ -48,8 +54,8 @@
 
         // Update the speed value when the slider is moved
         slider.addEventListener("input", function () {
-            moveSpeed = slider.value;
-            speedValue.textContent = moveSpeed;
+            moveSpeed = slider.value * 2;
+            speedValue.textContent = slider.value;
         });
 
         let screenWidth = window.innerWidth;
@@ -57,7 +63,21 @@
             const initialLeft = (screenWidth - object.offsetWidth) / 2;
             object.style.left = `${initialLeft}px`;
         }
+
+        window.addEventListener('resize', () => {
+            screenWidth = window.innerWidth;
+            centerObject();
+        });
         centerObject();
+
+        // Set the initial score value
+        let score = 0;
+        const scoreDisplay = document.getElementById("score");
+        function updateScore() {
+            scoreDisplay.textContent = score;
+        }
+        updateScore();
+
 
         function handleOrientation(gamma) {
             // Determine movement direction based on gamma value
@@ -70,9 +90,11 @@
             // Ensure the object remains within screen bounds
             newLeft = Math.max(0, Math.min(screenWidth - object.offsetWidth, newLeft));
 
+            // Update object's position
             object.style.left = `${newLeft}px`;
         }
 
+        // Start listening to device orientation events
         const dbRef = ref(database, 'orientationData');
         onValue(dbRef, (snapshot) => {
             if (!isActive) return;
@@ -80,15 +102,27 @@
             handleOrientation(data.orientation);
         });
 
-        const button = document.getElementById("start");
+        let animationFrameId = null;
+
+        const startButton = document.getElementById("start");
         const stopButton = document.getElementById("stop");
         const container = document.getElementById("container");
 
-        button.addEventListener("click", function (e) {
+        startButton.addEventListener("click", function (e) {
             e.preventDefault();
             isActive = !isActive;
+            score = 0;
+            updateScore();
             container.style.display = "none";
             stopButton.style.display = "block";
+            ball.style.display = "block";
+
+            // Cancel any existing animation frame
+            if (animationFrameId !== null) {
+                cancelAnimationFrame(animationFrameId);
+            }
+
+            startBallAnimation();
         });
 
         stopButton.addEventListener("click", function (e) {
@@ -96,16 +130,96 @@
             isActive = !isActive;
             container.style.display = "flex";
             stopButton.style.display = "none";
+            ball.style.display = "none";
             centerObject();
             set(ref(database, 'orientationData'), {
                 orientation: 0
             });
+
+            // Cancel the animation frame
+            if (animationFrameId !== null) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
         });
 
-        window.addEventListener('resize', () => {
-            screenWidth = window.innerWidth;
-            centerObject();
-        });
+        let ballSpeedY = 0;
+        let ballPositionX = 0;
+        let ballPositionY = 0;
+
+        function startBallAnimation() {
+            // Set initial ball speed
+            ballSpeedY = 2;
+
+            // Reset ball position
+            ballPositionX = screenWidth / 2;
+            ballPositionY = 40;
+
+            ball.style.top = `${ballPositionY}px`;
+            ball.style.left = `${ballPositionX}px`;
+
+            // Start ball animation loop
+            animationFrameId = requestAnimationFrame(moveBall);
+        }
+
+        function moveBall() {
+            ballPositionY += ballSpeedY;
+
+            // Check for collisions with object
+            const objectRect = object.getBoundingClientRect();
+            const ballRect = ball.getBoundingClientRect();
+            if (ballRect.left < objectRect.right && ballRect.right > objectRect.left &&
+                ballRect.top < objectRect.bottom && ballRect.bottom > objectRect.top) {
+                if (ballSpeedY > 0) {
+                    // Ball is moving downwards
+                    ballPositionY = objectRect.top - ballRect.height - 1;
+                } else {
+                    // Ball is moving upwards
+                    ballPositionY = objectRect.bottom + 1;
+                }
+
+                // Update score
+                score++;
+                updateScore();
+
+                // Reverse direction
+                ballSpeedY *= -1.1;
+            }
+
+            // Check for collisions with window edges
+            if (ballPositionY <= 40) {
+                // Ball hit the top edge
+                ballSpeedY = Math.abs(ballSpeedY);
+            } else if (ballPositionY >= window.innerHeight - ball.offsetHeight - 1) {
+                // Ball hit the bottom edge
+
+                // Stop Game
+                isActive = !isActive;
+                container.style.display = "flex";
+                stopButton.style.display = "none";
+                ball.style.display = "none";
+                centerObject();
+                set(ref(database, 'orientationData'), {
+                    orientation: 0
+                });
+
+                // Cancel the animation frame when stopping the animation
+                if (animationFrameId !== null) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+
+                return;
+            }
+
+            // Update ball position
+            ball.style.top = `${ballPositionY}px`;
+
+            // Continue the animation loop
+            animationFrameId = requestAnimationFrame(moveBall);
+        }
+
+
     </script>
 </body>
 
