@@ -77,7 +77,7 @@ function stopListening() {
   window.removeEventListener("deviceorientation", handleOrientation);
 }
 
-// Start/stop  button event listener
+// Start / Stop  button event listener
 startButton.addEventListener("click", function (e) {
   e.preventDefault();
   isActive = !isActive;

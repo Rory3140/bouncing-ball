@@ -31,7 +31,7 @@ const info = document.getElementById("info");
 const scoreInfo = document.getElementById("score-info");
 const startButton = document.getElementById("start");
 const speedValue = document.getElementById("speed-value");
-const slider = document.getElementById("slider");
+const speedSlider = document.getElementById("speed-slider");
 
 // Set initial values
 let screenWidth = window.innerWidth;
@@ -40,13 +40,13 @@ let animationFrameId = null;
 let score = null;
 
 // Set the initial speed value
-let moveSpeed = slider.value;
+let moveSpeed = speedSlider.value;
 speedValue.textContent = moveSpeed - 0.5;
 
-// Update the speed value when the slider is moved
-slider.addEventListener("input", function () {
-  moveSpeed = slider.value * 2.5;
-  speedValue.textContent = slider.value;
+// Update the speed value when the speed slider is moved
+speedSlider.addEventListener("input", function () {
+  moveSpeed = speedSlider.value * 2.5;
+  speedValue.textContent = speedSlider.value;
 });
 
 // Start button event listener
@@ -117,6 +117,7 @@ function handleOrientation(gamma) {
   paddle.style.left = `${newLeft}px`;
 }
 
+// Ball animation variables
 let ballSpeedY = 2;
 let ballSpeedX = 2;
 let ballPositionX = 0;
