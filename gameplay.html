@@ -144,6 +144,7 @@
         });
 
         let ballSpeedY = 0;
+        let ballSpeedX = 2;
         let ballPositionX = 0;
         let ballPositionY = 0;
 
@@ -164,12 +165,25 @@
 
         function moveBall() {
             ballPositionY += ballSpeedY;
+            ballPositionX += ballSpeedX;
 
             // Check for collisions with object
             const objectRect = object.getBoundingClientRect();
             const ballRect = ball.getBoundingClientRect();
             if (ballRect.left < objectRect.right && ballRect.right > objectRect.left &&
                 ballRect.top < objectRect.bottom && ballRect.bottom > objectRect.top) {
+
+                // Determine collision side and adjust horizontal direction
+                const hitPoint = ballRect.left + (ballRect.width / 2);
+                const objectMidPoint = objectRect.left + (objectRect.width / 2);
+                if (hitPoint < objectMidPoint) {
+                    // Hit the left side of the object
+                    ballSpeedX = Math.abs(ballSpeedX) * -1;
+                } else {
+                    // Hit the right side of the object
+                    ballSpeedX = Math.abs(ballSpeedX);
+                }
+
                 if (ballSpeedY > 0) {
                     // Ball is moving downwards
                     ballPositionY = objectRect.top - ballRect.height - 1;
@@ -182,42 +196,31 @@
                 score++;
                 updateScore();
 
-                // Reverse direction
+                // Reverse vertical direction and increase speed slightly
                 ballSpeedY *= -1.1;
             }
 
             // Check for collisions with window edges
+            if (ballPositionX <= 0 || ballPositionX >= window.innerWidth - ball.offsetWidth - 1) {
+                ballSpeedX *= -1; // Reverse horizontal direction
+            }
             if (ballPositionY <= 40) {
-                // Ball hit the top edge
                 ballSpeedY = Math.abs(ballSpeedY);
             } else if (ballPositionY >= window.innerHeight - ball.offsetHeight - 1) {
-                // Ball hit the bottom edge
 
-                // Stop Game
-                isActive = !isActive;
-                container.style.display = "flex";
-                stopButton.style.display = "none";
-                ball.style.display = "none";
-                centerObject();
-                set(ref(database, 'orientationData'), {
-                    orientation: 0
-                });
-
-                // Cancel the animation frame when stopping the animation
-                if (animationFrameId !== null) {
-                    cancelAnimationFrame(animationFrameId);
-                    animationFrameId = null;
-                }
-
+                // Game over
+                stopButton.click();
                 return;
             }
 
             // Update ball position
             ball.style.top = `${ballPositionY}px`;
+            ball.style.left = `${ballPositionX}px`;
 
             // Continue the animation loop
             animationFrameId = requestAnimationFrame(moveBall);
         }
+
 
 
     </script>
