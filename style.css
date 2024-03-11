@@ -68,7 +68,6 @@ label {
     padding: 10px;
     border-radius: 10px;
     font-size: larger;
-    z-index: -1;
 }
 
 .home:hover {
@@ -137,7 +136,7 @@ label {
     height: 30px;
     background-color: #FF4545;
     border-radius: 50%;
-    z-index: 1;
+    z-index: 2;
 }
 
 #object {
@@ -147,4 +146,5 @@ label {
     height: 30px;
     background-color: #FF4545;
     border-radius: 20px;
+    z-index: 1;
 }
