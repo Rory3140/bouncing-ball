@@ -1,35 +1,27 @@
 body {
-    font-family: Arial, sans-serif;
     background-color: #474F7A;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-h1 {
-    text-align: center;
-    color: #fff;
-}
-
-h2 {
-    text-align: center;
-    color: #fff;
-}
-
+h1,
+h2,
 p {
-    text-align: center;
     color: #fff;
+    text-align: center;
 }
 
 .button {
     background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
     border: none;
-    cursor: pointer;
-    width: 100%;
     border-radius: 20px;
+    color: white;
+    cursor: pointer;
     font-weight: bold;
+    margin: 8px 0;
+    padding: 14px 20px;
+    width: 100%;
 }
 
 .button:hover {
@@ -38,25 +30,25 @@ p {
 
 .button#stop {
     background-color: #FF4545;
-    width: 100px;
-    height: 30px;
-    padding: 0;
-    margin: 5px;
     display: none;
+    height: 30px;
+    margin: 5px;
+    padding: 0;
+    width: 100px;
 }
 
 .link {
-    color: #fff;
-    text-decoration: none;
-    background-color: #FF4545;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    width: 150px;
+    background-color: #FF4545;
+    border-radius: 10px;
+    color: #fff;
+    display: flex;
     font-weight: bold;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 20px;
+    text-decoration: none;
+    width: 150px;
 }
 
 .link:hover {
@@ -64,18 +56,18 @@ p {
 }
 
 #top-bar {
+    align-items: center;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
     margin: 5px;
 }
 
 #home-arrow {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px;
     border-radius: 10px;
+    color: #fff;
     font-size: larger;
+    padding: 10px;
+    text-decoration: none;
 }
 
 #home-arrow:hover {
@@ -83,27 +75,27 @@ p {
 }
 
 #container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    padding: 20px;
-    border-radius: 20px;
+    align-items: center;
     background-color: #6962AD;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    left: 50%;
     overflow: hidden;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
     z-index: 2;
 }
 
 #link-container {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     width: 100%;
 }
 
@@ -113,38 +105,38 @@ p {
 
 #speed-label {
     color: #fff;
-    margin: 10px;
-    width: 150px;
     display: flex;
     justify-content: space-between;
+    margin: 10px;
+    width: 150px;
 }
 
 #paddle {
-    position: absolute;
-    bottom: 20px;
-    width: 20%;
-    height: 30px;
     background-color: #FF4545;
     border-radius: 20px;
+    bottom: 20px;
+    height: 30px;
+    position: absolute;
+    width: 20%;
     z-index: 1;
 }
 
 #ball {
-    position: absolute;
-    display: none;
-    width: 30px;
-    height: 30px;
     background-color: #FF4545;
     border-radius: 50%;
+    display: none;
+    height: 30px;
+    position: absolute;
+    width: 30px;
     z-index: 2;
 }
 
 #score {
+    color: #fff;
+    font-size: 10rem;
     position: absolute;
+    text-align: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 10rem;
-    text-align: center;
 }
