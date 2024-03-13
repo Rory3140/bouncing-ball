@@ -36,6 +36,8 @@ function handleOrientation(event) {
 
   const gamma = event.gamma;
 
+  session = "1234";
+
   // Send data to the Firebase Realtime Database
   set(ref(database, session), {
     orientation: gamma,
