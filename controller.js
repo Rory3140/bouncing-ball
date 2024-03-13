@@ -31,12 +31,14 @@ let isActive = false;
 let session = null;
 const moveSpeed = 5;
 
+// Get session from the URL
+const urlParams = new URLSearchParams(window.location.search);
+session = urlParams.get("session");
+
 function handleOrientation(event) {
   if (!isActive) return;
 
   const gamma = event.gamma;
-
-  session = "1234";
 
   // Send data to the Firebase Realtime Database
   set(ref(database, session), {

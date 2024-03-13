@@ -40,11 +40,29 @@ let isActive = false;
 let animationFrameId = null;
 let score = null;
 let session = null;
-session = '1234';
+session = "12345";
+
+function generateRandomString(length) {
+  // Define the characters that can be in the string
+  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+
+  for (let i = 0; i < length; i++) {
+    // Generate a random index to pick a character from the characters string
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    // Append the character to the result
+    result += characters[randomIndex];
+  }
+
+  return result;
+}
+session = generateRandomString(5);
 
 // Generate QR code for the controller
 new QRCode(qrCode, {
-  text: "https://rory3140.github.io/bouncing-ball/controller.html?session=" + session,
+  text:
+    "https://rory3140.github.io/bouncing-ball/controller.html?session=" +
+    session,
   width: 128,
   height: 128,
   colorDark: "#ffffff",
@@ -109,7 +127,6 @@ updateScore();
 // Start listening to device orientation events
 const dbRef = ref(database, session);
 onValue(dbRef, (snapshot) => {
-  if (!isActive) return;
   const data = snapshot.val();
   handleOrientation(data.orientation);
 });
