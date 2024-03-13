@@ -28,6 +28,7 @@ const scoreDisplay = document.getElementById("score");
 const stopButton = document.getElementById("stop");
 const container = document.getElementById("container");
 const info = document.getElementById("info");
+const qrCode = document.getElementById("qr-code");
 const scoreInfo = document.getElementById("score-info");
 const startButton = document.getElementById("start");
 const speedValue = document.getElementById("speed-value");
@@ -38,6 +39,16 @@ let screenWidth = window.innerWidth;
 let isActive = false;
 let animationFrameId = null;
 let score = null;
+
+// Generate QR code for the controller
+new QRCode(qrCode, {
+  text: "https://rory3140.github.io/bouncing-ball/controller.html",
+  width: 128,
+  height: 128,
+  colorDark: "#ffffff",
+  colorLight: "#6962AD",
+  correctLevel: QRCode.CorrectLevel.H,
+});
 
 // Set the initial speed value
 let moveSpeed = speedSlider.value;

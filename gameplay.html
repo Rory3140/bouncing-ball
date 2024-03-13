@@ -7,6 +7,7 @@
     <title>Game</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="qrcode.js"></script>
 </head>
 
 <body>
@@ -19,7 +20,9 @@
         <button class="button" id="stop">Stop</button>
     </div>
     <div id="container">
-        <p id="info"> Link your mobile device to control the paddle and try stop the ball hitting the bottom!</p>
+        <h1>Bouncing Ball</h1>
+        <p id="info"> Link your mobile device using the QR code below to control the paddle and try stop the ball hitting the bottom!</p>
+        <div id="qr-code"></div>
         <h2 id="score-info"></h2>
         <button class="button" id="start">Start Game</button>
         <label id="speed-label" for="slider">Paddle Speed: <span id="speed-value"></span></label>
