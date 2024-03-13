@@ -76,17 +76,14 @@ h1::after {
     margin: 5px;
 }
 
-#home-arrow {
-    border-radius: 10px;
-    color: #fff;
-    font-size: larger;
-    padding: 10px;
-    text-decoration: none;
-    z-index: 2;
+#logo {
+    padding: 0;
+    margin: 0;
 }
 
-#home-arrow:hover {
-    opacity: 0.8;
+#logo img {
+    height: 35px;
+    width: 35px;
 }
 
 #container {
