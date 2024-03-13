@@ -131,13 +131,6 @@ onValue(dbRef, (snapshot) => {
   }
 });
 
-// Remove the session data when the user leaves the page
-window.addEventListener("beforeunload", function (e) {
-  if (session) {
-    set(ref(database, session), null);
-  }
-});
-
 // Handle device orientation
 function handleOrientation(gamma) {
   // Determine movement direction based on gamma value

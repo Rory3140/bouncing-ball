@@ -104,13 +104,6 @@ function centerPaddle() {
   paddle.style.left = `${initialLeft}px`;
 }
 
-// Remove the session data when the user leaves the page
-window.addEventListener("beforeunload", function (e) {
-  if (session) {
-    set(ref(database, session), null);
-  }
-});
-
 // Update the screen width when the window is resized and re-center the paddle
 window.addEventListener("resize", () => {
   screenWidth = window.innerWidth;
