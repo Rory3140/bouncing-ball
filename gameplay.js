@@ -40,7 +40,7 @@ let isActive = false;
 let animationFrameId = null;
 let score = null;
 let session = null;
-session = 1234;
+session = '1234';
 
 // Generate QR code for the controller
 new QRCode(qrCode, {
