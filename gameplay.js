@@ -27,7 +27,6 @@ const ball = document.getElementById("ball");
 const scoreDisplay = document.getElementById("score");
 const stopButton = document.getElementById("stop");
 const container = document.getElementById("container");
-const info = document.getElementById("info");
 const qrCode = document.getElementById("qr-code");
 const scoreInfo = document.getElementById("score-info");
 const startButton = document.getElementById("start");
@@ -117,7 +116,6 @@ stopButton.addEventListener("click", function (e) {
 function updateScore() {
   scoreDisplay.textContent = score;
   if (score !== null) {
-    info.style.display = "none";
     scoreInfo.textContent = "Score: " + score;
     scoreInfo.style.display = "block";
   }
@@ -130,6 +128,13 @@ onValue(dbRef, (snapshot) => {
   const data = snapshot.val();
   if (data) {
     handleOrientation(data.orientation);
+  }
+});
+
+// Remove the session data when the user leaves the page
+window.addEventListener("beforeunload", function (e) {
+  if (session) {
+    set(ref(database, session), null);
   }
 });
 
