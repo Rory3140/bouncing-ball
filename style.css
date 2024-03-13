@@ -113,10 +113,20 @@ p {
     text-align: center;
 }
 
-
-
 #score-info {
     display: none;
+}
+
+#hidden {
+    display: none;
+}
+
+#slider-container {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
 }
 
 #speed-label {

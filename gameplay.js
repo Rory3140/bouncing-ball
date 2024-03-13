@@ -29,13 +29,15 @@ const stopButton = document.getElementById("stop");
 const container = document.getElementById("container");
 const qrCode = document.getElementById("qr-code");
 const scoreInfo = document.getElementById("score-info");
-const startButton = document.getElementById("start");
+const hidden = document.getElementById("hidden");
 const speedValue = document.getElementById("speed-value");
 const speedSlider = document.getElementById("speed-slider");
+const startButton = document.getElementById("start");
 
 // Set initial values
 let screenWidth = window.innerWidth;
 let isActive = false;
+let deviceLinked = false;
 let animationFrameId = null;
 let score = null;
 let session = null;
@@ -127,6 +129,11 @@ const dbRef = ref(database, session);
 onValue(dbRef, (snapshot) => {
   const data = snapshot.val();
   if (data) {
+    if (!deviceLinked) {
+      deviceLinked = true;
+      qrCode.style.display = "none";
+      hidden.style.display = "block";
+    }
     handleOrientation(data.orientation);
   }
 });
