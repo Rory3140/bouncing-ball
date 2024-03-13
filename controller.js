@@ -28,6 +28,7 @@ const startButton = document.getElementById("start");
 // Set initial values
 let screenWidth = window.innerWidth;
 let isActive = false;
+let session = null;
 const moveSpeed = 5;
 
 function handleOrientation(event) {
@@ -36,7 +37,7 @@ function handleOrientation(event) {
   const gamma = event.gamma;
 
   // Send data to the Firebase Realtime Database
-  set(ref(database, "orientationData"), {
+  set(ref(database, session), {
     orientation: gamma,
   });
 
@@ -94,6 +95,7 @@ startButton.addEventListener("click", function (e) {
 
 // Center the paddle on the screen
 function centerPaddle() {
+  paddle.style.display = "block";
   const initialLeft = (screenWidth - paddle.offsetWidth) / 2;
   paddle.style.left = `${initialLeft}px`;
 }

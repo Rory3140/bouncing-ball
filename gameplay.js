@@ -39,10 +39,12 @@ let screenWidth = window.innerWidth;
 let isActive = false;
 let animationFrameId = null;
 let score = null;
+let session = null;
+session = 1234;
 
 // Generate QR code for the controller
 new QRCode(qrCode, {
-  text: "https://rory3140.github.io/bouncing-ball/controller.html",
+  text: "https://rory3140.github.io/bouncing-ball/controller.html?session=" + session,
   width: 128,
   height: 128,
   colorDark: "#ffffff",
@@ -105,7 +107,7 @@ function updateScore() {
 updateScore();
 
 // Start listening to device orientation events
-const dbRef = ref(database, "orientationData");
+const dbRef = ref(database, session);
 onValue(dbRef, (snapshot) => {
   if (!isActive) return;
   const data = snapshot.val();
@@ -217,6 +219,7 @@ function moveBall() {
 
 // Center the paddle on the screen
 function centerPaddle() {
+  paddle.style.display = "block";
   const initialLeft = (screenWidth - paddle.offsetWidth) / 2;
   paddle.style.left = `${initialLeft}px`;
 }

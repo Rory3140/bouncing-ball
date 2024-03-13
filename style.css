@@ -68,6 +68,7 @@ p {
     font-size: larger;
     padding: 10px;
     text-decoration: none;
+    z-index: 2;
 }
 
 #home-arrow:hover {
@@ -115,6 +116,7 @@ p {
 #paddle {
     background-color: #FF4545;
     border-radius: 20px;
+    display: none;
     bottom: 20px;
     height: 30px;
     position: absolute;
