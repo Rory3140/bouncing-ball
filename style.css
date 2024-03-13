@@ -88,6 +88,7 @@ p {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
+    min-width: 275px;
     z-index: 2;
 }
 
@@ -99,6 +100,19 @@ p {
     justify-content: center;
     width: 100%;
 }
+
+#instructions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#instructions div {
+    margin: 10px;
+    text-align: center;
+}
+
 
 
 #score-info {

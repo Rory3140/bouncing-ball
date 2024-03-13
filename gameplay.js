@@ -128,7 +128,9 @@ updateScore();
 const dbRef = ref(database, session);
 onValue(dbRef, (snapshot) => {
   const data = snapshot.val();
-  handleOrientation(data.orientation);
+  if (data) {
+    handleOrientation(data.orientation);
+  }
 });
 
 // Handle device orientation

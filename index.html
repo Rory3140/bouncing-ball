@@ -4,18 +4,39 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bouncing Ball</title>
+    <title>Game</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="qrcode.js"></script>
 </head>
 
 <body>
+    <div id="paddle"></div>
+    <div id="ball"></div>
+    <div id="score"></div>
+
+    <div id="top-bar">
+        <a href="selector.html" id="home-arrow"><i class="fa fa-arrow-left"></i></a>
+        <button class="button" id="stop">Stop</button>
+    </div>
     <div id="container">
         <h1>Bouncing Ball</h1>
-        <div id="link-container">
-            <a class="link" href="gameplay.html">Play Game</a>
-            <a class="link" href="controller.html">Controller</a>
+        <div id="instructions">
+            <div>
+                <h2>Instructions:</h2>
+                <p id="info"> Link your mobile device using the QR code to control the paddle and try stop the ball
+                    hitting the bottom!</p>
+            </div>
+            <div id="qr-code"></div>
         </div>
+        <h2 id="score-info"></h2>
+        <button class="button" id="start">Start Game</button>
+        <label id="speed-label" for="slider">Paddle Speed: <span id="speed-value"></span></label>
+        <input type="range" min="1" max="10" value="5.5" step="0.1" id="speed-slider">
     </div>
+
+    <script src="gameplay.js" type="module"></script>
 </body>
 
 </html>
