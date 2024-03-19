@@ -74,7 +74,7 @@ new QRCode(qrCode, {
 // Set the initial speed value
 const initialSpeed = 5;
 let moveSpeed = 5 * 2.5;
-speedValue.textContent = moveSpeed - 0.5;
+speedValue.textContent = initialSpeed;
 
 // Update the speed value when the speed slider is moved
 speedSlider.addEventListener("input", function () {
