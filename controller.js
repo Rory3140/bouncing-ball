@@ -38,7 +38,8 @@ session = urlParams.get("session");
 function handleOrientation(event) {
   if (!isActive) return;
 
-  const gamma = event.gamma;
+  let gamma = event.gamma;
+  gamma = (Math.round(gamma * 100) / 100).toFixed(2);
 
   // Send data to the Firebase Realtime Database
   set(ref(database, session), {
